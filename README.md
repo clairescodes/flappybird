@@ -1,4 +1,4 @@
-# Flappy Bird Clone
+# 🐥 Flappy Bird Clone
 
 A browser-based Flappy Bird game built using vanilla JavaScript and HTML5 Canvas.
 
