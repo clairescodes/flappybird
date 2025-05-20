@@ -36,6 +36,7 @@ let gravity = 0.4;
 
 //game over -> update(), placePipes() will not work. 
 let gameOver = false; 
+let score = 0; 
 
 window.onload = function() {
     //element with id board corresponds to the canvas tag in html 
@@ -93,11 +94,22 @@ function update() {
         let pipe = pipeArray[i]; 
         pipe.x += velocityX; //pipe moves 
         context.drawImage(pipe.img, pipe.x, pipe.y, pipe.width, pipe.height); 
+        
+        // increment score if bird passes right side of pipe 
+        if (!pipe.passed && bird.x > pipe.x + pipe.width) {
+            score += 0.5; //0.5 because two pipes exist! so for a set of pipe score is 0.5*2 = 1
+            pipe.passed = true; 
+        }
 
         if (detectCollision(bird, pipe)) {
             gameOver = true; 
         }
     }
+
+    //score 
+    context.fillStyle = "white"; 
+    context.font = "45px sans-serif"; 
+    context.fillText(score, 5, 45); //score at x=5 y=45. top left 
 }
 
 function placePipes() {
