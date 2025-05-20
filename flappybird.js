@@ -34,6 +34,9 @@ let velocityX = -2; //pipe moving left speed
 let velocityY = 0; //bird jump speed 
 let gravity = 0.4; 
 
+//game over -> update(), placePipes() will not work. 
+let gameOver = false; 
+
 window.onload = function() {
     //element with id board corresponds to the canvas tag in html 
     board = document.getElementById("board"); 
@@ -66,9 +69,12 @@ window.onload = function() {
 
 }
 
-//main game loop 
+//main game loop. update canvas 
 function update() {
     requestAnimationFrame(update); 
+    if (gameOver) { 
+        return; 
+    }
     context.clearRect(0, 0, board.width, board.height); //clear prev frame
 
     //bird 
@@ -77,16 +83,27 @@ function update() {
     bird.y = Math.max(bird.y + velocityY, 0); //bird jumps up, limit bird to top of canvas 
     context.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height); 
 
+    // case of bird falling to bottom 
+    if (bird.y > board.height) {
+        gameOver = true; 
+    }
+
     //pipes
     for (let i = 0; i < pipeArray.length; i++) {
         let pipe = pipeArray[i]; 
         pipe.x += velocityX; //pipe moves 
         context.drawImage(pipe.img, pipe.x, pipe.y, pipe.width, pipe.height); 
+
+        if (detectCollision(bird, pipe)) {
+            gameOver = true; 
+        }
     }
 }
 
 function placePipes() {
-
+    if (gameOver) { 
+        return; 
+    }
     //shift y position of pipe up. see 3/4 of pipe 
     //(0-1) * pipeHeight/2
     // 0 -> -128 (pipeHeight/4)
@@ -120,4 +137,11 @@ function moveBird(e) { //keyevent
         //jump 
         velocityY = -6; 
     }
+}
+
+function detectCollision(a, b) {
+    return a.x < b.x + b.width && 
+            a.x + a.width > b.x && 
+            a.y < b.y + b.height && 
+            a.y + a.height > b.y; 
 }
