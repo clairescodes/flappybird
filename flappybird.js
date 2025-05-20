@@ -106,10 +106,20 @@ function update() {
         }
     }
 
+    //clear pipes that have gone off screen. (if right side of the pipe go off canvas) 
+    while(pipeArray.length > 0 && pipeArray[0].x < -pipeWidth) {
+        pipeArray.shift(); //removes first element from array 
+    }
+
     //score 
     context.fillStyle = "white"; 
     context.font = "45px sans-serif"; 
     context.fillText(score, 5, 45); //score at x=5 y=45. top left 
+
+    //game over text 
+    if (gameOver) {
+        context.fillText("GAME OVER", 5, 90); 
+    }
 }
 
 function placePipes() {
@@ -148,6 +158,14 @@ function moveBird(e) { //keyevent
     if (e.code == "Space" || e.code == "ArrowUp" || e.code == "KeyX" ) {
         //jump 
         velocityY = -6; 
+
+        //reset game. all properties to default values. 
+        if (gameOver) {
+            bird.y = birdY; 
+            pipeArray = []; 
+            score = 0; 
+            gameOver = false; 
+        }
     }
 }
 
