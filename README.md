@@ -20,5 +20,5 @@ To run the game locally:
 
 Example gameplay
 
-![Gameplay Screenshot](./screenshots/gameplay.png)
+![Gameplay Screenshot](./screenshots/demogame.png)
 
