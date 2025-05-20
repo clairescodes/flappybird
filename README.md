@@ -17,3 +17,8 @@ To run the game locally:
     ```
 
 2. Open `index.html` in your browser.
+
+Example gameplay
+
+![Gameplay Screenshot](./screenshots/gameplay.png)
+
