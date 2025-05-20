@@ -31,7 +31,8 @@ let bottomPipeImg;
 
 //physics 
 let velocityX = -2; //pipe moving left speed 
-
+let velocityY = 0; //bird jump speed 
+let gravity = 0.4; 
 
 window.onload = function() {
     //element with id board corresponds to the canvas tag in html 
@@ -61,6 +62,8 @@ window.onload = function() {
 
     requestAnimationFrame(update);
     setInterval(placePipes, 1500); //every 1.5 seconds
+    document.addEventListener("keydown", moveBird); //make bird jump when spacebar
+
 }
 
 //main game loop 
@@ -69,6 +72,9 @@ function update() {
     context.clearRect(0, 0, board.width, board.height); //clear prev frame
 
     //bird 
+    velocityY += gravity; 
+    // bird.y += velocityY; 
+    bird.y = Math.max(bird.y + velocityY, 0); //bird jumps up, limit bird to top of canvas 
     context.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height); 
 
     //pipes
@@ -107,5 +113,11 @@ function placePipes() {
         passed : false 
     }
     pipeArray.push(bottomPipe); 
+}
 
+function moveBird(e) { //keyevent
+    if (e.code == "Space" || e.code == "ArrowUp" || e.code == "KeyX" ) {
+        //jump 
+        velocityY = -6; 
+    }
 }
